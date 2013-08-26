@@ -1,12 +1,14 @@
 /**
 *
 * @file  /C/Users/796470/Development/projects/CFTest/UserModel.cfc
-* @author  
-* @description
-*
+* @author 
+* @description User model
+* @package user.models
 */
 
 component output="false" displayname="UserModel"  {
+
+	property type="any" name="datasource";
 
 	property type="numeric" name="id";
 
@@ -15,6 +17,9 @@ component output="false" displayname="UserModel"  {
 	property type="string" name="email"
 
 	public function init(){
+
+		this.datasource = 'cf_test';
+
 		return this;
 	}
 
@@ -52,16 +57,28 @@ component output="false" displayname="UserModel"  {
 	public any function delete(param) {
 		
 		return;
-	}
+	}	
 	
 	
 	public struct function findUserById(required numeric id) {
-		
-		return;
+
+		try {
+			var sql = 'SELECT * FROM users WHERE id = ';
+
+			userQuery = new Query();
+
+			userQuery.setDataSource(this.datasource);
+
+			userQuery.setSQL(sql);
+
+			user = userQuery.Execute().getResult();
+
+			return user;		
+		}
+		catch(any e) {
+			writeDump(e);
+		}
 	}
-	
-	
-	
 	
 	
 }
