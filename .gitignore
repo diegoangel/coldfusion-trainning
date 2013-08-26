@@ -1,3 +1,6 @@
 # openbd server folders
 WEB-INF
 bluedragon
+
+# eclipse
+.project
