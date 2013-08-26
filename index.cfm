@@ -6,7 +6,7 @@
 <body>
 <div class="jumbotron">
     <h1>Hello, world!</h1>
-    <p></p>
+    <p>hola mundito pequeño</p>
 </div>
 </body>
 </html>
