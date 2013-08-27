@@ -30,7 +30,7 @@ component output="false" displayname="UserController"  {
 			return true;
 			// TODO: crear dispatcher para routear urls
 			// Ahora hay un cfif mugroso en index.cfm
-			//location(url='/views/welcome.cfm');
+			//location(url='/views/welcome.cfm'); 
 		}
 		catch(any e) {
 			writeDump(e);
