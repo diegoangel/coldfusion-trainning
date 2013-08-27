@@ -1,6 +1,6 @@
 component {
 
-    this.name = "CFTest";
+    this.name = "cftest";
     this.applicationTimeout = CreateTimeSpan(10, 0, 0, 0); //10 days
     this.datasource = "cf_test";
     this.sessionManagement = true;

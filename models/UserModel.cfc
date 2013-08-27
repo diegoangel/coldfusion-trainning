@@ -8,13 +8,14 @@
 
 component output="false" displayname="UserModel"  {
 
-	property type="any" name="datasource";
+	variables.datasource;
 
-	property type="numeric" name="id";
+	variables.id;
 
-	property type="string" name="username";
+	variables.username;
 
-	property type="string" name="email"
+	variables.mail;
+
 
 	public function init(){
 
@@ -61,23 +62,23 @@ component output="false" displayname="UserModel"  {
 	
 	
 	public struct function findUserById(required numeric id) {
-
 		try {
-			var sql = 'SELECT * FROM users WHERE id = ';
+			var sql = 'SELECT * FROM users WHERE id = :id';
 
-			userQuery = new Query();
-
-			userQuery.setDataSource(this.datasource);
-
-			userQuery.setSQL(sql);
-
-			user = userQuery.Execute().getResult();
+			var queryService = new Query();
+			queryService.setDataSource(this.datasource);
+			queryService.setName('findUserById');
+			queryService.setSQL(sql);
+			queryService.addParam(name="id", value="arguments.id", cfsqltype="cf_sql_integer");
+			user = queryService.Execute().getResult();
 
 			return user;		
 		}
 		catch(any e) {
 			writeDump(e);
-		}
+		} finally {
+			// TODO: log Exception!
+		}	
 	}
 	
 	
