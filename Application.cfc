@@ -2,19 +2,27 @@ component {
 
     this.name = "cftest";
     this.applicationTimeout = CreateTimeSpan(10, 0, 0, 0); //10 days
-    this.datasource = "cf_test";
+    this.datasource = "cftest";
     this.sessionManagement = true;
     this.sessionTimeout = CreateTimeSpan(0, 0, 30, 0); //30 minutes
-    this.customTagPaths = [ expandPath('/CFTestpCustomTags') ];
+    this.customTagPaths = [ expandPath('/cftestCustomTags') ];
     this.mappings = {
-        "/user" = expandPath('/com/tata/user')
+        "/controllers" = expandPath('controllers/'),
+        '/models' = expandPath('models/')
     };
 
     // see also: http://help.adobe.com/en_US/ColdFusion/10.0/CFMLRef/WSc3ff6d0ea77859461172e0811cbec22c24-750b.html
     // see also: http://help.adobe.com/en_US/ColdFusion/10.0/Developing/WSED380324-6CBE-47cb-9E5E-26B66ACA9E81.html
 
     function onApplicationStart() {
-        return true;
+        try {
+            return true;
+        }
+        catch(any e) {
+            writeDump(e);
+        } finally {
+            // TODO: hacer algo aca en caso de que todo falle
+        }
     }
 
     function onSessionStart() {}

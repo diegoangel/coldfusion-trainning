@@ -1,14 +1,18 @@
 /**
 *
 * @file  /C/Users/796470/Development/projects/CFTest/UserModel.cfc
+* @displayname UserModel
+* @hint Modelo de la entidad User
 * @author 
 * @description User model
 * @package user.models
 */
 
-component output="false" displayname="UserModel"  {
+component output="false" {
 
-	variables.datasource;
+	variables.datasource = 'cf_test';
+
+	variables.table = 'users';
 
 	variables.id;
 
@@ -16,42 +20,69 @@ component output="false" displayname="UserModel"  {
 
 	variables.mail;
 
+	/**
+	* Contructor del componente
+	* 
+	* @description
+	* @hint
+	* @return component
+	*/ 
+	public function init(struct arguments) {
 
-	public function init(){
-
-		this.datasource = 'cf_test';
+		variables.datasource = (arguments.datasource == '') ? Application.getDatasource() : arguments.datasource;
 
 		return this;
 	}
 
 	public string function getUsername() {
 		
-		return this.userName;
+		return variables.username;
 	}
 
 
 	public void function setUsername(required string username) {
 		
-		this.userName = username;
+		variables.userName = username;
 	}
 	
-
-	public boolean function store() {
+	/**
+	* TODO: completar metodo
+	* 
+	* @description
+	* @hint
+	* @return boolean
+	*/ 
+	public boolean function store(struct params) {
 		
-		return;
+
 	}
 
 
-	public any function create() {
+	public any function create(params) {
 		
-		return;
+		try {
+			var sql = 'INSERT INTO ' & variables.table & ' () VALUES ()';
+			return;		
+		}
+		catch(any e) {
+			writeDump(e);
+		} finally {
+		
+		}
 	}
 	
 	
-	public any function update(param) {
+	public any function update(struct params) {
 		
-		var sql = '';
-		return;
+		try {
+			sql = 'UPDATE ' & variables.VALUES & ' SET ';
+			return;		
+		}
+		catch(any e) {
+			writeDump(e);
+		} finally {
+		
+		}
 	}
 	
 	
@@ -66,13 +97,35 @@ component output="false" displayname="UserModel"  {
 			var sql = 'SELECT * FROM users WHERE id = :id';
 
 			var queryService = new Query();
-			queryService.setDataSource(this.datasource);
+			queryService.setDataSource(variables.datasource);
 			queryService.setName('findUserById');
 			queryService.setSQL(sql);
 			queryService.addParam(name="id", value="arguments.id", cfsqltype="cf_sql_integer");
 			user = queryService.Execute().getResult();
 
-			return user;		
+			return user;	
+		}
+		catch(any e) {
+			rethrow;
+		} finally {
+			// TODO: log Exception!
+		}	
+	}
+
+	public struct function findUserByUsernameAndPassword(required string username, required string password) {
+		try {
+			var sql = 'SELECT * FROM users WHERE username = :username AND passwd = SHA1(:password)';
+
+			var queryService = new Query();		
+
+			queryService.setDataSource(variables.datasource);
+			queryService.dbType('query');
+			queryService.setName('findUserByUsernameAndPassword');
+			queryService.setSQL(sql);
+			queryService.addParam(name="username", value="arguments.username", cfsqltype="cf_sql_varchar");
+			queryService.addParam(name="password", value="arguments.password", cfsqltype="cf_sql_varchar");			
+			var user = queryService.Execute().getResult();
+			return user;	
 		}
 		catch(any e) {
 			writeDump(e);
@@ -80,6 +133,8 @@ component output="false" displayname="UserModel"  {
 			// TODO: log Exception!
 		}	
 	}
+	
+	
 	
 	
 }

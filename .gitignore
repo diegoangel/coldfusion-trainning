@@ -4,3 +4,7 @@ bluedragon
 
 # eclipse
 .project
+
+# sublime text 2
+cftest.sublime-project
+cftest.sublime-workspace
