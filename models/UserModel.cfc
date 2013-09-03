@@ -10,15 +10,17 @@
 
 component output="false" {
 
-	variables.datasource = 'cf_test';
+	variables.datasource = cftest;
 
-	variables.table = 'users';
+	variables.table = users;
 
-	variables.id;
+	variables.id = 0;
 
-	variables.username;
+	variables.username = ;
 
-	variables.mail;
+	variables.mail = ;
+
+	property name="test" 
 
 	/**
 	* Contructor del componente
@@ -29,7 +31,7 @@ component output="false" {
 	*/ 
 	public function init(struct arguments) {
 
-		variables.datasource = (arguments.datasource == '') ? Application.getDatasource() : arguments.datasource;
+		variables.datasource = (arguments.datasource == ) ? Application.getDatasource() : arguments.datasource;
 
 		return this;
 	}
@@ -61,7 +63,7 @@ component output="false" {
 	public any function create(params) {
 		
 		try {
-			var sql = 'INSERT INTO ' & variables.table & ' () VALUES ()';
+			var sql = INSERT INTO  & variables.table &  () VALUES ();
 			return;		
 		}
 		catch(any e) {
@@ -75,7 +77,7 @@ component output="false" {
 	public any function update(struct params) {
 		
 		try {
-			sql = 'UPDATE ' & variables.VALUES & ' SET ';
+			sql = UPDATE  & variables.VALUES &  SET ;
 			return;		
 		}
 		catch(any e) {
@@ -94,47 +96,46 @@ component output="false" {
 	
 	public struct function findUserById(required numeric id) {
 		try {
-			var sql = 'SELECT * FROM users WHERE id = :id';
+			var sql = SELECT * FROM users WHERE id = :id;
 
 			var queryService = new Query();
 			queryService.setDataSource(variables.datasource);
-			queryService.setName('findUserById');
+			queryService.setName(findUserById);
 			queryService.setSQL(sql);
 			queryService.addParam(name="id", value="arguments.id", cfsqltype="cf_sql_integer");
-			user = queryService.Execute().getResult();
-
-			return user;	
+			var user = queryService.Execute();
+			var userResultset = user.getResult();
+			writeDump(user.getPrefix());
+			return user;
 		}
 		catch(any e) {
 			rethrow;
 		} finally {
-			// TODO: log Exception!
-		}	
-	}
+			
+		}
 
-	public struct function findUserByUsernameAndPassword(required string username, required string password) {
+	public any function findUserByUsernameAndPassword(required string username, required string passwd) {
 		try {
-			var sql = 'SELECT * FROM users WHERE username = :username AND passwd = SHA1(:password)';
+			var sql = SELECT id, username, email, active 
+				FROM users 
+				WHERE username = :username AND passwd = SHA1(:passwd) LIMIT 1;
 
-			var queryService = new Query();		
+			var queryService = new Query();
 
 			queryService.setDataSource(variables.datasource);
-			queryService.dbType('query');
-			queryService.setName('findUserByUsernameAndPassword');
+			queryService.setName(findUserByUsernameAndPassword);
 			queryService.setSQL(sql);
-			queryService.addParam(name="username", value="arguments.username", cfsqltype="cf_sql_varchar");
-			queryService.addParam(name="password", value="arguments.password", cfsqltype="cf_sql_varchar");			
-			var user = queryService.Execute().getResult();
+			queryService.addParam(name="username", value=arguments.username, cfsqltype="cf_sql_varchar");
+			queryService.addParam(name="passwd", value=arguments.passwd, cfsqltype="cf_sql_varchar");		
+			var user = queryService.Execute();
+			var userResultset = user.getResult();
+			writeDump(user.getPrefix());
 			return user;	
 		}
 		catch(any e) {
 			writeDump(e);
 		} finally {
-			// TODO: log Exception!
+			
 		}	
-	}
-	
-	
-	
-	
+	}	
 }

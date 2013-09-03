@@ -19,12 +19,12 @@
 		</div>
 	</div>
 <cfscript>
-	cmp = (structKeyExists(form, 'cmp')) ? form.cmp : false; 
-	fn = (structKeyExists(form, 'fn')) ? form.fn : false;
-	if (cmp == 'UserController') {
+	cmp = (structKeyExists(form, cmp)) ? form.cmp : false; 
+	fn = (structKeyExists(form, fn)) ? form.fn : false;
+	if (cmp == UserController) {
 		switch(fn) {
-			case 'login':
-				user = createObject('component', 'controllers.UserController');
+			case login:
+				user = createObject(component, controllers.UserController);
 				user.login(form);
 			break;	
 			default:
@@ -40,7 +40,7 @@
 			
 			</div>
 			<div class="col-lg-4">
-				<cfif structKeyExists(session, 'username')>
+				<cfif structKeyExists(session, username)>
 					<cfinclude template="/views/welcome.cfm"/>
 				<cfelse>
 					<cfinclude template="/views/login.cfm"/>

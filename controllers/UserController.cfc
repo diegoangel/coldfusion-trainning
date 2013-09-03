@@ -8,7 +8,7 @@
 
 component output="false" displayname="UserController"  {
 
-	variables.modelName = 'models.UserModel';
+	variables.modelName = models.UserModel;
 
 	public any function init(){
 		return this;
@@ -19,18 +19,14 @@ component output="false" displayname="UserController"  {
 		var post = arguments.formData;
 
 		try {
-			var userModel = createObject('component', 'models.UserModel') ;
+			var userModel = createObject(component, models.UserModel) ;
 			var user = userModel.findUserByUsernameAndPassword(post.username, post.passwd);
-
-			if (user != '') {
-				session.username = user.username;
-				session.email = user.email;
-			}
 
 			return true;
 			// TODO: crear dispatcher para routear urls
 			// Ahora hay un cfif mugroso en index.cfm
-			//location(url='/views/welcome.cfm'); 
+			//location(url=/views/welcome.cfm); 
+			include "";
 		}
 		catch(any e) {
 			writeDump(e);

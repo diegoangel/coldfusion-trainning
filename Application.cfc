@@ -15,14 +15,7 @@ component {
     // see also: http://help.adobe.com/en_US/ColdFusion/10.0/Developing/WSED380324-6CBE-47cb-9E5E-26B66ACA9E81.html
 
     function onApplicationStart() {
-        try {
-            return true;
-        }
-        catch(any e) {
-            writeDump(e);
-        } finally {
-            // TODO: hacer algo aca en caso de que todo falle
-        }
+
     }
 
     function onSessionStart() {}
@@ -41,6 +34,8 @@ component {
 
     function onApplicationEnd( struct ApplicationScope ) {}
 
-    function onError( any Exception, string EventName ) {}
+    function onError( any Exception, string EventName ) {
+        writeDump(Exception);
+    }
 
 }	
